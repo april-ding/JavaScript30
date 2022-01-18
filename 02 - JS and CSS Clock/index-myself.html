@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>JS30 - 2 - from Scratch</title>
+</head>
+
+<body>
+    <div id="clock">
+        <div id="clock-face">
+            <div class="hand hour-hand" style="background-color: red;"></div>
+            <div class="hand min-hand" style="background-color:blue"></div>
+            <div class="hand sec-hand"></div>
+        </div>
+    </div>
+</body>
+
+<style>
+    html {
+        background-color: lightcyan;
+        background-size: cover;
+        font-size: 10px;
+        /* we need this bc we are using rem system here, and it's based on the root's font size */
+    }
+
+    body {
+        margin: 0;
+        display: flex;
+        flex: 1;
+        min-height: 100vh;
+        align-items: center;
+    }
+
+    #clock {
+        width: 30rem;
+        height: 30rem;
+        border: 20px solid lightcoral;
+        border-radius: 50%;
+        margin: auto;
+    }
+
+    /* to set up positioning and sizing for the hands */
+    #clock-face {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        transform: translateY(-2.5px) rotate(90deg);
+    }
+
+    .hand {
+        width: 50%;
+        height: 5px;
+        background: black;
+        position: absolute;
+        /* this is important bc we want the hands to stack on top of each other */
+        top: 50%;
+        transform-origin: 100%;
+        transition: all 0.05s ease-in-out;
+    }
+
+    .sec-hand {
+        /* transform: rotate(30deg); */
+
+    }
+</style>
+
+<script>
+    const sec_hand = document.querySelector('.sec-hand');
+    const min_hand = document.querySelector('.min-hand');
+    const hour_hand = document.querySelector('.hour-hand');
+
+    function setDate() {
+        const date = new Date();
+        const sec = date.getSeconds();
+        const min = date.getMinutes();
+        const hour = date.getHours();
+        // convert the current sec to a percentage on the clock
+        sec_hand.style.transform = `rotate(${sec / 60 * 360}deg)`;
+        min_hand.style.transform = `rotate(${min / 60 * 360}deg)`;
+        const hour_deg = hour % 12 / 12 * 360 + min / 60 * 30;
+        hour_hand.style.transform = `rotate(${hour_deg}deg)`;
+    }
+
+    setInterval(setDate, 1000);
+</script>
+
+</html>
