@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>JS30 - 3 from scratch</title>
+</head>
+
+<body>
+    <h1>Update controls with <span class="highlight">JS</span></h1>
+    <div id="controls">
+        <label for="spacing">Spacing</label>
+        <input id="spacing" name="spacing" type="range" min="10" max="200" value="10" data-unit="px">
+
+        <label for="blur">Blur</label>
+        <input id="blur" name="blur" type="range" min="0" max="25" value="10" data-unit="px">
+
+        <label for="base-color">Base Color</label>
+        <input id="base-color" name="base-color" type="color" value="#ffc600">
+    </div>
+
+    <img src="https://source.unsplash.com/7bwQXzbF6KE/800x500">
+
+    <div id="example">
+        <label for="example-color" class="label-color">Choose Color</label>
+        <input id="example-color" name="example-color" type="color">
+    </div>
+
+    <style>
+        :root {
+            /* to define a css variable */
+            --example-color: #00ff00;
+            --base-color: #ffc600;
+            --spacing: 10px;
+            --blur: 10px;
+        }
+
+        .label-color {
+            color: var(--example-color);
+            /* to use a css variable, use var(--variableName) */
+        }
+
+        body {
+            text-align: center;
+            background-color: lightcoral;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 100;
+            font-size: 50px;
+        }
+
+        h1 {
+            margin: 10px;
+        }
+
+        #controls {
+            margin-bottom: 30px;
+
+        }
+
+        input {
+            width: 100px;
+        }
+
+        img {
+            width: 80%;
+            padding: var(--spacing);
+            background: var(--base-color);
+            filter: blur(var(--blur));
+        }
+
+        .highlight {
+            color: var(--base-color);
+        }
+    </style>
+    <script>
+        // select all 3 inputs, so when they change & mouse slides over them, we can change accordingly(aka update the css variables that we made)
+        const inputs = document.querySelectorAll('#controls input');
+
+        function handleUpdate(e) {
+            const unit = this.dataset.unit || ''; // if it doesn't require a unit, like for color there's no unit, then fallback to nothing
+
+            // to select your css variables:
+            // select the entire document, and
+            document.documentElement.style.setProperty(`--${this.name}`, this.value + unit);
+
+        }
+
+        inputs.forEach(input => {
+            input.addEventListener('change', handleUpdate);
+            input.addEventListener('mousemove', handleUpdate);
+        });
+
+        const input = document.querySelector('#example input');
+        function handleUpdate2() {
+            // set the css variable named "input.name", aka "example-color" to the current value that the user selected
+            document.documentElement.style.setProperty(`--${this.name}`, this.value)
+        }
+
+        input.addEventListener('change', handleUpdate2);
+        input.addEventListener('mousemove', handleUpdate2);
+
+
+
+    </script>
+</body>
+
+</html>
